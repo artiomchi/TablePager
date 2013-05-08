@@ -1,0 +1,56 @@
+﻿@* Generator: MvcHelper *@
+@using PagedList
+@using System.Web.Mvc
+@using System.Web.Mvc.Html
+@functions {
+    public static HelperResult Pager<T>(IPagedList<T> pagedList, String label = "Page: ")
+    {
+        if (pagedList.PageCount == 0) {
+            return null;
+        }
+        var model = new PagedListData(pagedList.PageNumber, pagedList.PageSize, pagedList.PageCount, pagedList.TotalItemCount);
+        return Pager(model, label);
+    }
+}
+@helper Pager(PagedListData model, String label) {
+    <div class="float-right">
+        <label>@label</label>
+        <ul>
+        @if (!model.CanSeeFirstPage()) {
+            <li>
+                <button type="submit" name="page" value="1">1</button>.
+            </li>
+        }
+        @foreach (var page in model.PageRange) {
+            if (page == model.PageNumber) {
+                <li>@page</li>
+            } else {
+                <li><button type="submit" name="page" value="@page">@page</button></li>
+            }
+        }
+        @if (!model.CanSeeLastPage()) {
+            <li><button type="submit" name="page" value="@model.PageCount">@model.PageCount</button></li>
+        }
+        </ul>
+    </div>
+}
+
+@helper PageSizer(System.Web.Mvc.HtmlHelper html, String label = "Page Size:", Int32[] pageSizes = null) {
+    @html.Label("PageSize", label)
+    @html.DropDownList("PageSize", TableModel.GetPageSizes(pageSizes), new { onchange = "$(this).closest('form').submit();" })
+    @html.ValidationMessage("PageSize")
+}
+
+@helper Header(IEnumerable<TableHeader> headers) {
+    <thead>
+        @foreach (var header in headers) { 
+            <th class="@header.CssClass">@if(header.Value != null) { <button type="submit" name="changeSort" value="@header.Value" title="@header.ToolTip">@header.Title</button> } else { @header.Title }</th>
+        }
+    </thead>
+}
+
+@helper FormHidden(ITableModel model) {
+    @* Mvc Seems to prioritise the values from the request model, over the values changed in the code, so I have to go a bit "manual" here :) [Artiom] *@
+    <input type="hidden" name="SortBy" value="@model.SortBy" />
+    <input type="hidden" name="SortAsc" value="@model.SortAsc.ToString()" />
+}

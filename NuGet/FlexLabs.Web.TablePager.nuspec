@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>TablePager</id>
+        <version>1.5.0</version>
+        <title>Table Pager</title>
+        <authors>Artiom Chilaru</authors>
+        <owners>Artiom Chilaru</owners>
+        <projectUrl>https://github.com/artiomchi/TablePager</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Helps manage paging and page sorting in a ASP.NET MVC project</description>
+        <tags>mvc4</tags>
+        <dependencies>
+            <dependency id="PagedList" version="1.15.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\bin\Release\FlexLabs.Web.TablePager.dll" target="lib\FlexLabs.Web.TablePager.dll" />
+        <file src="..\bin\Release\FlexLabs.Web.TablePager.pdb" target="lib\FlexLabs.Web.TablePager.pdb" />
+    </files>
+</package>
