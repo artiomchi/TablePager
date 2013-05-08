@@ -55,6 +55,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TablePager.cshtml</DependentUpon>
     </Compile>
+    <None Include="NuGet\FlexLabs.Web.TablePager.nuspec" />
     <None Include="TablePager.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>TablePager.generated.cs</LastGenOutput>
