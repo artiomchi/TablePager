@@ -12,10 +12,12 @@ namespace FlexLabs.Web.TablePager
         public static Int32 DefaultPageRange = 10;
         public static Int32[] DefaultPageSizes = new[] { 10, 25, 50, 100 };
 
-        internal static IEnumerable<SelectListItem> GetPageSizes(Int32[] pageSizes = null)
+        internal static IEnumerable<SelectListItem> GetPageSizes(Int32[] pageSizes = null, Int32? currentSize = null)
         {
             if (pageSizes == null)
                 pageSizes = TableModel.DefaultPageSizes;
+            if (currentSize.HasValue && !pageSizes.Contains(currentSize.Value))
+                pageSizes = pageSizes.Union(new[] { currentSize.Value }).OrderBy(p => p).ToArray();
             return pageSizes.Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString(), Selected = i == TableModel.DefaultPageSize });
         }
     }

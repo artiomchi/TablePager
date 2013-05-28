@@ -215,13 +215,13 @@ WebViewPage.WriteLiteralTo(@__razor_helper_writer, "        </ul>\r\n    </div>\
 }
 
 
-public static System.Web.WebPages.HelperResult PageSizer(System.Web.Mvc.HtmlHelper html, String label = "Page Size:", Int32[] pageSizes = null) {
+public static System.Web.WebPages.HelperResult PageSizer(System.Web.Mvc.HtmlHelper html, String label = "Page Size:", Int32[] pageSizes = null, Int32? currentSize = null) {
 return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
 #line 38 "..\..\TablePager.cshtml"
-                                                                                                          
+                                                                                                                                     
     
 #line default
 #line hidden
@@ -242,14 +242,14 @@ WebViewPage.WriteTo(@__razor_helper_writer, html.Label("PageSize", label));
 
 
 #line 40 "..\..\TablePager.cshtml"
-WebViewPage.WriteTo(@__razor_helper_writer, html.DropDownList("PageSize", TableModel.GetPageSizes(pageSizes), new { onchange = "$(this).closest('form').submit();" }));
+WebViewPage.WriteTo(@__razor_helper_writer, html.DropDownList("PageSize", TableModel.GetPageSizes(pageSizes, currentSize), new { onchange = "$(this).closest('form').submit();" }));
 
 #line default
 #line hidden
 
 
 #line 40 "..\..\TablePager.cshtml"
-                                                                                                                              
+                                                                                                                                           
     
 #line default
 #line hidden

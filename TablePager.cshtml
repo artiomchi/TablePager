@@ -35,9 +35,9 @@
     </div>
 }
 
-@helper PageSizer(System.Web.Mvc.HtmlHelper html, String label = "Page Size:", Int32[] pageSizes = null) {
+@helper PageSizer(System.Web.Mvc.HtmlHelper html, String label = "Page Size:", Int32[] pageSizes = null, Int32? currentSize = null) {
     @html.Label("PageSize", label)
-    @html.DropDownList("PageSize", TableModel.GetPageSizes(pageSizes), new { onchange = "$(this).closest('form').submit();" })
+    @html.DropDownList("PageSize", TableModel.GetPageSizes(pageSizes, currentSize), new { onchange = "$(this).closest('form').submit();" })
     @html.ValidationMessage("PageSize")
 }
 
