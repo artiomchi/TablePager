@@ -25,13 +25,15 @@ namespace FlexLabs.Web.TablePager
     [ModelBinder(typeof(TableModelBinder))]
     public abstract class TableModel<TSorter, TModel> : TableModel, ITableModel where TSorter : struct
     {
-        public TableModel(TSorter defaultSorter, Boolean defaultAscending)
+        public TableModel(TSorter defaultSorter, Boolean defaultAscending, Boolean pagingEnabled = true)
         {
             DefaultSortBy = defaultSorter;
             DefaultSortAsc = defaultAscending;
+            PagingEnabled = pagingEnabled;
         }
         private TSorter DefaultSortBy;
         private Boolean DefaultSortAsc;
+        private Boolean PagingEnabled = true;
 
         public TSorter? ChangeSort { get; set; }
         public TSorter? SortBy { get; set; }
@@ -42,9 +44,30 @@ namespace FlexLabs.Web.TablePager
 
         public IPagedList<TModel> PageItems;
 
-        public void SetPageItems(IEnumerable<TModel> items)
+        public void SetPageItems(IEnumerable<TModel> items, Int32? totalItemCount = null)
         {
-            PageItems = items.ToPagedList(Page ?? 1, PageSize ?? DefaultPageSize);
+            IList<TModel> dataSet;
+
+            if (PagingEnabled)
+            {
+                var pageNumber = Page ?? 1;
+                var pageSize = PageSize ?? DefaultPageSize;
+
+                if (!totalItemCount.HasValue)
+                {
+                    PageItems = items.ToPagedList(pageNumber, pageSize);
+                }
+                else
+                {
+                    dataSet = items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+                    PageItems = new StaticPagedList<TModel>(dataSet, pageNumber, pageSize, totalItemCount.Value);
+                }
+            }
+            else
+            {
+                dataSet = items.ToList();
+                PageItems = new StaticPagedList<TModel>(dataSet, 1, dataSet.Count, dataSet.Count);
+            }
         }
 
         public void UpdateSorter()
