@@ -1,7 +1,7 @@
 ﻿using PagedList;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace FlexLabs.Web.TablePager
@@ -22,8 +22,20 @@ namespace FlexLabs.Web.TablePager
         }
     }
 
+    public abstract class TableModel<TSorter, TModel> : TableModel<TSorter, TModel, TModel>, ITableModel where TSorter : struct
+    {
+        public TableModel(TSorter defaultSorter, Boolean defaultAscending, Boolean pagingEnabled = true)
+            : base(defaultSorter, defaultAscending, pagingEnabled)
+        { }
+
+        public override TModel TranslateItem(TModel item)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     [ModelBinder(typeof(TableModelBinder))]
-    public abstract class TableModel<TSorter, TModel> : TableModel, ITableModel where TSorter : struct
+    public abstract class TableModel<TSorter, TSource, TModel> : TableModel, ITableModel where TSorter : struct
     {
         public TableModel(TSorter defaultSorter, Boolean defaultAscending, Boolean pagingEnabled = true)
         {
@@ -44,30 +56,37 @@ namespace FlexLabs.Web.TablePager
 
         public IPagedList<TModel> PageItems;
 
-        public void SetPageItems(IEnumerable<TModel> items, Int32? totalItemCount = null)
+        public abstract TModel TranslateItem(TSource item);
+
+        public void SetPageItems(IEnumerable<TSource> items, Int32? totalItemCount = null)
         {
-            IList<TModel> dataSet;
+            IEnumerable<TSource> dataSet;
+            var pageNumber = Page ?? 1;
+            var pageSize = PageSize ?? DefaultPageSize;
 
             if (PagingEnabled)
             {
-                var pageNumber = Page ?? 1;
-                var pageSize = PageSize ?? DefaultPageSize;
-
                 if (!totalItemCount.HasValue)
                 {
-                    PageItems = items.ToPagedList(pageNumber, pageSize);
+                    var pagedItems = items.ToPagedList(pageNumber, pageSize);
+                    totalItemCount = pagedItems.TotalItemCount;
+                    dataSet = pagedItems;
                 }
                 else
                 {
                     dataSet = items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-                    PageItems = new StaticPagedList<TModel>(dataSet, pageNumber, pageSize, totalItemCount.Value);
                 }
             }
             else
             {
-                dataSet = items.ToList();
-                PageItems = new StaticPagedList<TModel>(dataSet, 1, dataSet.Count, dataSet.Count);
+                dataSet = items;
+                pageSize = dataSet.Count();
             }
+
+            if (typeof(TSource) == typeof(TModel))
+                PageItems = new StaticPagedList<TModel>(dataSet.OfType<TModel>(), pageNumber, pageSize, totalItemCount ?? dataSet.Count());
+            else
+                PageItems = new StaticPagedList<TModel>(dataSet.Select(i => TranslateItem(i)), pageNumber, pageSize, totalItemCount ?? dataSet.Count());
         }
 
         public void UpdateSorter()
