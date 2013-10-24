@@ -79,7 +79,7 @@ namespace FlexLabs.Web.TablePager
             }
             else
             {
-                dataSet = items;
+                dataSet = items.ToList();
                 pageSize = dataSet.Count();
             }
 
