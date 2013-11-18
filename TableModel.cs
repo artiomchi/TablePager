@@ -80,7 +80,7 @@ namespace FlexLabs.Web.TablePager
             else
             {
                 dataSet = items.ToList();
-                pageSize = dataSet.Count();
+                pageSize = dataSet.Count() + 1;
             }
 
             if (typeof(TSource) == typeof(TModel))
