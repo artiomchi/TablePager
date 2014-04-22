@@ -41,10 +41,21 @@
     @html.ValidationMessage("PageSize")
 }
 
-@helper Header(IEnumerable<TableHeader> headers) {
+@helper Header(IEnumerable<ITableHeader> headers) {
     <thead>
-        @foreach (var header in headers) { 
-            <th class="@header.CssClass">@if(header.Value != null) { <button type="submit" name="changeSort" value="@header.Value" title="@header.ToolTip">@header.Title</button> } else { @header.Title }</th>
+        @foreach (var iheader in headers) { 
+            <th class="@iheader.CssClass">@{
+                var header = iheader as TableHeader;
+                if (iheader is CustomTableHeader) {
+                    @((iheader as CustomTableHeader).Content(null))
+                } else {
+                    if(header.Value != null)
+                        {<button type="submit" name="changeSort" value="@header.Value" title="@header.ToolTip">@header.Title</button>}
+                    else { 
+                        @header.Title 
+                    }
+                }
+            }</th>
         }
     </thead>
 }

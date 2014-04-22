@@ -45,7 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomTableHeader.cs" />
     <Compile Include="IOrderByExpression.cs" />
+    <Compile Include="ITableHeader.cs" />
     <Compile Include="ITableModel.cs" />
     <Compile Include="OrderByExpression.cs" />
     <Compile Include="OrderByExpressionCollection.cs" />

@@ -2,7 +2,7 @@
 
 namespace FlexLabs.Web.TablePager
 {
-    public class TableHeader
+    public class TableHeader : ITableHeader
     {
         public String Title { get; set; }
         public Object Value { get; set; }
