@@ -7,5 +7,7 @@ namespace FlexLabs.Web.TablePager
     {
         public Func<Object, IHtmlString> Content { get; set; }
         public String CssClass { get; set; }
+        public Int32? ColSpan { get; set; }
+        public Int32? RowSpan { get; set; }
     }
 }
