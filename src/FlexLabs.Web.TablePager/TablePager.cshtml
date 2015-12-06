@@ -42,20 +42,27 @@
 }
 
 @helper Header(IEnumerable<ITableHeader> headers) {
+@Header(new[] { headers })
+}
+@helper Header(IEnumerable<ITableHeader>[] headersSet) {
     <thead>
-        @foreach (var iheader in headers) { 
-            <th class="@iheader.CssClass">@{
-                var header = iheader as TableHeader;
-                if (iheader is CustomTableHeader) {
-                    @((iheader as CustomTableHeader).Content(null))
-                } else {
-                    if(header.Value != null)
-                        {<button type="submit" name="changeSort" value="@header.Value" title="@header.ToolTip">@header.Title</button>}
-                    else { 
-                        @header.Title 
-                    }
+        @foreach (var headers in headersSet) {
+            <tr>
+                @foreach (var iheader in headers) { 
+                    <th class="@iheader.CssClass" colspan="@iheader.ColSpan" rowspan="@iheader.RowSpan">@{
+                        var header = iheader as TableHeader;
+                        if (iheader is CustomTableHeader) {
+                            @((iheader as CustomTableHeader).Content(null))
+                        } else {
+                            if(header.Value != null)
+                                {<button type="submit" name="changeSort" value="@header.Value" title="@header.ToolTip">@header.Title</button>}
+                            else { 
+                                @header.Title 
+                            }
+                        }
+                    }</th>
                 }
-            }</th>
+            </tr>
         }
     </thead>
 }

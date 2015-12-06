@@ -1,0 +1,39 @@
+﻿{
+  "version": "2.0.0-*",
+  "description": "",
+  "authors": [ "Artiom Chilaru" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Web": ""
+      },
+      "dependencies": {
+        "Microsoft.AspNet.Mvc": "4.0.20505",
+        "PagedList": "1.15.0"
+      }
+    },
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Web": ""
+      },
+      "dependencies": {
+        "Microsoft.AspNet.Mvc": "4.0.20505",
+        "PagedList": "1.15.0"
+      }
+    }
+  },
+
+  "scripts": {
+    "postbuild": [
+      "%project:Directory%\\..\\..\\..\\signtool.exe sign /n \"Artiom Chilaru\" /t \"http://timestamp.digicert.com\" /a \"%project:Directory%\\..\\..\\artifacts\\bin\\%project:Name%\\Release\\dnx451\\*.dll",
+      "%project:Directory%\\..\\..\\..\\signtool.exe sign /n \"Artiom Chilaru\" /t \"http://timestamp.digicert.com\" /a \"%project:Directory%\\..\\..\\artifacts\\bin\\%project:Name%\\Release\\net45\\*.dll"
+    ]
+  }
+}
