@@ -71,4 +71,7 @@
     @* Mvc Seems to prioritise the values from the request model, over the values changed in the code, so I have to go a bit "manual" here :) [Artiom] *@
     <input type="hidden" name="SortBy" value="@model.SortBy" />
     <input type="hidden" name="SortAsc" value="@model.SortAsc.ToString()" />
+    if (model.FirstItemID.HasValue) {
+        <input type="hidden" name="FirstItemID" value="@model.FirstItemID" />
+    }
 }

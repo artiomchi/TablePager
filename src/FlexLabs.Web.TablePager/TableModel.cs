@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 
 namespace FlexLabs.Web.TablePager
@@ -43,15 +44,18 @@ namespace FlexLabs.Web.TablePager
             DefaultSortAsc = defaultAscending;
             PagingEnabled = pagingEnabled;
         }
-        private TSorter DefaultSortBy;
-        private Boolean DefaultSortAsc;
-        private Boolean PagingEnabled = true;
+        private readonly TSorter DefaultSortBy;
+        private readonly Boolean DefaultSortAsc;
+        private readonly Boolean PagingEnabled = true;
+        private Func<TSource, Int64> FirstID64Selector = null;
+        private Func<TSource, Int32> FirstID32Selector = null;
 
         public TSorter? ChangeSort { get; set; }
         public TSorter? SortBy { get; set; }
         public Boolean? SortAsc { get; set; }
         public Int32? PageSize { get; set; }
         public Int32? Page { get; set; }
+        public Int64? FirstItemID { get; set; }
         object ITableModel.SortBy { get { return SortBy; } set { SortBy = (TSorter?)value; } }
 
         public IPagedList<TModel> PageItems;
@@ -87,6 +91,41 @@ namespace FlexLabs.Web.TablePager
                 PageItems = new StaticPagedList<TModel>(dataSet.OfType<TModel>(), pageNumber, pageSize, totalItemCount ?? dataSet.Count());
             else
                 PageItems = new StaticPagedList<TModel>(dataSet.Select(i => TranslateItem(i)), pageNumber, pageSize, totalItemCount ?? dataSet.Count());
+
+            if (PageItems.TotalItemCount > 0 && (FirstID32Selector != null || FirstID64Selector != null))
+            {
+                FirstItemID = FirstID64Selector != null
+                    ? items.Select(FirstID64Selector).FirstOrDefault()
+                    : items.Select(FirstID32Selector).FirstOrDefault();
+            }
+        }
+
+        public Int64? GetFirstItemID(Func<TSource, Int64> idSelector)
+        {
+            var showNewResults = !Page.HasValue && !ChangeSort.HasValue;
+
+            if (showNewResults)
+            {
+                FirstID64Selector = idSelector;
+                return null;
+            }
+
+            return FirstItemID;
+        }
+
+        public Int32? GetFirstItemID(Func<TSource, Int32> idSelector)
+        {
+            var showNewResults = !Page.HasValue && !ChangeSort.HasValue;
+
+            if (showNewResults)
+            {
+                FirstID32Selector = idSelector;
+                return null;
+            }
+
+            if (FirstItemID.HasValue)
+                return Convert.ToInt32(FirstItemID.Value);
+            return null;
         }
 
         public void UpdateSorter()

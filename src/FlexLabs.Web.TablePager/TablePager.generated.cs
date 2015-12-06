@@ -600,13 +600,40 @@ namespace FlexLabs.Web.TablePager
 
 
 #line 76 "..\..\TablePager.cshtml"
+                if (model.FirstItemID.HasValue)
+                {
+
+
+#line default
+#line hidden
+                    WriteLiteralTo(__razor_helper_writer, "        <input");
+
+                    WriteLiteralTo(__razor_helper_writer, " type=\"hidden\"");
+
+                    WriteLiteralTo(__razor_helper_writer, " name=\"FirstItemID\"");
+
+                    WriteAttributeTo(__razor_helper_writer, "value", Tuple.Create(" value=\"", 3137), Tuple.Create("\"", 3163)
+
+#line 77 "..\..\TablePager.cshtml"
+, Tuple.Create(Tuple.Create("", 3145), Tuple.Create<System.Object, System.Int32>(model.FirstItemID
+
+#line default
+#line hidden
+, 3145), false)
+                    );
+
+                    WriteLiteralTo(__razor_helper_writer, " />\r\n");
+
+
+#line 78 "..\..\TablePager.cshtml"
+                }
 
 
 #line default
 #line hidden
             });
 
-#line 76 "..\..\TablePager.cshtml"
+#line 79 "..\..\TablePager.cshtml"
         }
 #line default
 #line hidden

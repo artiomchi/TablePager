@@ -7,5 +7,6 @@ namespace FlexLabs.Web.TablePager
         void UpdateSorter();
         Object SortBy { get; set; }
         Boolean? SortAsc { get; set; }
+        Int64? FirstItemID { get; set; }
     }
 }

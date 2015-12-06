@@ -1,9 +1,10 @@
 ﻿{
-  "version": "2.0.0-*",
-  "description": "",
+  "version": "2.0.5-*",
+  "title": "FlexLabs Table Pager",
+  "description": "Helps manage paging and page sorting in a ASP.NET MVC project. Works best when used in conjunction with FlexLabs.Util",
   "authors": [ "Artiom Chilaru" ],
   "tags": [ "" ],
-  "projectUrl": "",
+  "projectUrl": "https://github.com/artiomchi/TablePager",
   "licenseUrl": "",
 
   "dependencies": {
