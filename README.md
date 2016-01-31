@@ -1,6 +1,8 @@
 TablePager
 ==========
 
+OBSOLETE: This project has been merged into https://github.com/artiomchi/FlexLabs.Util.Web
+
 A NuGet extension that helps automate and simplify paging for MVC sites
 
 ---
